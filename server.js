@@ -5,13 +5,11 @@ const cors = require("cors");
 
 const app = express();
 
-//  middleware
-app.use(cors({
-  origin: "https://your-frontend-url.onrender.com"
-}));
+// ✅ allow all (simple)
+app.use(cors());
 app.use(express.json());
 
-//  routes
+// routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/tasks", require("./routes/tasks"));
 
@@ -25,17 +23,17 @@ app.get("/api/test", verifyToken, (req, res) => {
   });
 });
 
-// root route
+// root
 app.get("/", (req, res) => {
   res.send("Server running 🚀");
 });
 
-// health check
+// health
 app.get("/health", (req, res) => {
   res.send("OK");
 });
 
-// DB connect
+// DB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
   .catch(err => {

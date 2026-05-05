@@ -5,19 +5,34 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // ✅ LIVE BACKEND URL
+  const API = "https://task-backend-4ysp.onrender.com/api/auth/signup";
 
   const signup = async () => {
+    if (!name || !email || !password) {
+      return alert("Please fill all fields");
+    }
+
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", {
+      setLoading(true);
+
+      await axios.post(API, {
         name,
         email,
         password
       });
 
       alert("Signup successful ✅");
+
+      // redirect to login
       window.location.href = "/";
     } catch (err) {
+      console.log(err.response?.data || err.message);
       alert("Signup failed ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,10 +106,11 @@ export default function Signup() {
         {/* Button */}
         <button
           onClick={signup}
+          disabled={loading}
           style={{
             width: "100%",
             padding: "12px",
-            background: "#c33764",
+            background: loading ? "#888" : "#c33764",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -102,10 +118,10 @@ export default function Signup() {
             fontSize: "16px"
           }}
         >
-          Signup
+          {loading ? "Creating..." : "Signup"}
         </button>
 
-        {/* Switch to Login */}
+        {/* Switch */}
         <p style={{ marginTop: "15px", fontSize: "14px" }}>
           Already have an account?{" "}
           <span

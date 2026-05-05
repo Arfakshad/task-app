@@ -4,18 +4,36 @@ import axios from "axios";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // ✅ LIVE BACKEND URL
+  const API = "https://task-backend-4ysp.onrender.com/api/auth/login";
 
   const login = async () => {
+    if (!email || !password) {
+      return alert("Please fill all fields");
+    }
+
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      setLoading(true);
+
+      const res = await axios.post(API, {
         email,
         password
       });
 
+      // ✅ save token
       localStorage.setItem("token", res.data.token);
+
+      alert("Login successful ✅");
+
+      // redirect
       window.location.href = "/dashboard";
     } catch (err) {
-      alert("Login failed ❌");
+      console.log(err.response?.data || err.message);
+      alert("Invalid email or password ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,10 +93,11 @@ export default function Login() {
         {/* Button */}
         <button
           onClick={login}
+          disabled={loading}
           style={{
             width: "100%",
             padding: "12px",
-            background: "#1d2671",
+            background: loading ? "#888" : "#1d2671",
             color: "white",
             border: "none",
             borderRadius: "8px",
@@ -86,10 +105,10 @@ export default function Login() {
             fontSize: "16px"
           }}
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
 
-        {/* Extra */}
+        {/* Switch */}
         <p style={{ marginTop: "15px", fontSize: "14px" }}>
           Don’t have an account?{" "}
           <span
