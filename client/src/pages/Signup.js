@@ -7,8 +7,8 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ LIVE BACKEND URL
-  const API = "https://task-backend-4ysp.onrender.com/api/auth/signup";
+  //  FIXED BACKEND URL
+  const API = "https://task-app-0jgl.onrender.com/api/auth/signup";
 
   const signup = async () => {
     if (!name || !email || !password) {
@@ -25,12 +25,11 @@ export default function Signup() {
       });
 
       alert("Signup successful ✅");
-
-      // redirect to login
       window.location.href = "/";
+
     } catch (err) {
-      console.log(err.response?.data || err.message);
-      alert("Signup failed ❌");
+      console.log("SIGNUP ERROR:", err.response?.data || err.message);
+      alert(err.response?.data || "Signup failed ❌");
     } finally {
       setLoading(false);
     }
@@ -59,7 +58,6 @@ export default function Signup() {
       >
         <h2 style={{ marginBottom: "20px" }}>📝 Signup</h2>
 
-        {/* Name */}
         <input
           placeholder="Enter name"
           value={name}
@@ -73,7 +71,6 @@ export default function Signup() {
           }}
         />
 
-        {/* Email */}
         <input
           type="email"
           placeholder="Enter email"
@@ -88,7 +85,6 @@ export default function Signup() {
           }}
         />
 
-        {/* Password */}
         <input
           type="password"
           placeholder="Enter password"
@@ -103,7 +99,6 @@ export default function Signup() {
           }}
         />
 
-        {/* Button */}
         <button
           onClick={signup}
           disabled={loading}
@@ -121,7 +116,6 @@ export default function Signup() {
           {loading ? "Creating..." : "Signup"}
         </button>
 
-        {/* Switch */}
         <p style={{ marginTop: "15px", fontSize: "14px" }}>
           Already have an account?{" "}
           <span

@@ -6,8 +6,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ LIVE BACKEND URL
-  const API = "https://task-backend-4ysp.onrender.com/api/auth/login";
+  // ✅ YOUR REAL BACKEND URL (UPDATED)
+  const API = "https://task-app-0jgl.onrender.com/api/auth/login";
 
   const login = async () => {
     if (!email || !password) {
@@ -22,16 +22,17 @@ export default function Login() {
         password
       });
 
-      // ✅ save token
+      // ✅ SAVE TOKEN
       localStorage.setItem("token", res.data.token);
 
       alert("Login successful ✅");
 
-      // redirect
+      // ✅ REDIRECT
       window.location.href = "/dashboard";
+
     } catch (err) {
-      console.log(err.response?.data || err.message);
-      alert("Invalid email or password ❌");
+      console.log("LOGIN ERROR:", err.response?.data || err.message);
+      alert(err.response?.data || "Login failed ❌");
     } finally {
       setLoading(false);
     }
@@ -108,7 +109,7 @@ export default function Login() {
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        {/* Switch */}
+        {/* Signup link */}
         <p style={{ marginTop: "15px", fontSize: "14px" }}>
           Don’t have an account?{" "}
           <span
