@@ -36,15 +36,12 @@ app.get("/health", (req, res) => {
 });
 
 // DB connect
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB Connected ✅"))
-.catch(err => {
-  console.log("DB Error:", err.message);
-  process.exit(1);
-});
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected ✅"))
+  .catch(err => {
+    console.log("DB Error:", err.message);
+    process.exit(1);
+  });
 
 // server
 const PORT = process.env.PORT || 5000;
