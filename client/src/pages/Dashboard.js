@@ -7,7 +7,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
-  const API = "https://task-backend-4ysp.onrender.com/api/tasks";
+  const API = "https://task-app-0jgl.onrender.com/api/tasks";
 
   
   // FETCH TASKS
