@@ -8,7 +8,7 @@ export default function Dashboard() {
 
   const token = localStorage.getItem("token");
 
-  // 🔥 IMPORTANT: Your Render backend URL
+  // ✅ Backend URL
   const API = "https://task-app-0jgl.onrender.com/api/tasks";
 
   // =========================
@@ -21,9 +21,18 @@ export default function Dashboard() {
           Authorization: "Bearer " + token
         }
       });
+
       setTasks(res.data);
+
     } catch (err) {
       console.error("GET ERROR:", err.response?.data || err.message);
+
+      // 🔥 Handle invalid token
+      if (err.response?.data === "Invalid token") {
+        localStorage.removeItem("token");
+        alert("Session expired. Please login again.");
+        window.location.href = "/";
+      }
     }
   };
 
@@ -50,8 +59,18 @@ export default function Dashboard() {
 
       setTitle("");
       getTasks();
+
     } catch (err) {
       console.error("CREATE ERROR:", err.response?.data || err.message);
+
+      // 🔥 Handle invalid token
+      if (err.response?.data === "Invalid token") {
+        localStorage.removeItem("token");
+        alert("Session expired. Please login again.");
+        window.location.href = "/";
+        return;
+      }
+
       alert(err.response?.data || "Task failed");
     } finally {
       setLoading(false);
@@ -68,7 +87,9 @@ export default function Dashboard() {
           Authorization: "Bearer " + token
         }
       });
+
       getTasks();
+
     } catch (err) {
       console.error("DELETE ERROR:", err.response?.data || err.message);
     }
@@ -90,7 +111,9 @@ export default function Dashboard() {
           }
         }
       );
+
       getTasks();
+
     } catch (err) {
       console.error("UPDATE ERROR:", err.response?.data || err.message);
     }
@@ -113,8 +136,9 @@ export default function Dashboard() {
       window.location.href = "/";
       return;
     }
+
     getTasks();
-  }, []);
+  }, [token]);
 
   // =========================
   // UI
