@@ -5,11 +5,13 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ middleware FIRST
-app.use(cors());
+//  middleware
+app.use(cors({
+  origin: "https://your-frontend-url.onrender.com"
+}));
 app.use(express.json());
 
-// ✅ routes AFTER middleware
+//  routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/tasks", require("./routes/tasks"));
 
@@ -28,15 +30,23 @@ app.get("/", (req, res) => {
   res.send("Server running 🚀");
 });
 
-// DB connect
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected ✅"))
-  .catch(err => {
-    console.log("DB Error:", err.message);
-    process.exit(1);
-  });
+// health check
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
 
-// server start
+// DB connect
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB Connected ✅"))
+.catch(err => {
+  console.log("DB Error:", err.message);
+  process.exit(1);
+});
+
+// server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
